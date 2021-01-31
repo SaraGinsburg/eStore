@@ -1,3 +1,9 @@
 main {
   min-height: 80vh;
 }
+h5 {
+  padding: 0.2rem 0;
+}
+.rating span {
+  margin: 0.1rem;
+}
