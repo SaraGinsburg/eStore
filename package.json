@@ -21,8 +21,11 @@
   },
   "homepage": "https://github.com/SaraGinsburg/eStore#readme",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "colors": "^1.4.0",
     "dotenv": "^8.2.0",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "mongoose": "^5.11.15"
   },
   "devDependencies": {
     "concurrently": "^5.3.0",
