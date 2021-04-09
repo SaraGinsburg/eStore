@@ -1,16 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-  Row,
-  Col,
-  Image,
-  ListGroup,
-  Card,
-  Button,
-  ListGroupItem,
-  Form,
-} from 'react-bootstrap'
+import { Row, Col, Image, ListGroup, Card, Button, Form } from 'react-bootstrap'
 import Rating from '../components/Rating'
 import { listProductDetails } from '../actions/productActions'
 import Message from '../components/Message'
@@ -102,7 +93,7 @@ const ProductScreen = ({ history, match }) => {
                       </Row>
                     </ListGroup.Item>
                   )}
-                  <ListGroupItem>
+                  <ListGroup.Item>
                     <Button
                       onClick={addToCartHandler}
                       className="btn-block"
@@ -111,7 +102,7 @@ const ProductScreen = ({ history, match }) => {
                     >
                       Add To Cart
                     </Button>
-                  </ListGroupItem>
+                  </ListGroup.Item>
                 </ListGroup>
               </Card>
             </Col>
