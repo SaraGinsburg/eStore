@@ -46,6 +46,7 @@ export const logout = () => (dispatch) => {
   dispatch({
     type: USER_LOGOUT,
   })
+  document.location.href = '/login'
 }
 export const register = (name, email, password) => async (dispatch) => {
   try {
