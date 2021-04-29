@@ -8,7 +8,6 @@ const addOrderItems = asyncHandler(async (req, res) => {
   const {
     orderItems,
     shippingAddress,
-    userDetails,
     paymentMethod,
     itemsPrice,
     taxPrice,
@@ -26,7 +25,6 @@ const addOrderItems = asyncHandler(async (req, res) => {
       orderItems,
       user: req.user._id, //we can get the user._id from the token
       shippingAddress,
-      userDetails,
       paymentMethod,
       itemsPrice,
       taxPrice,
@@ -37,3 +35,4 @@ const addOrderItems = asyncHandler(async (req, res) => {
     res.status(201).json(createdOrder)
   }
 })
+export { addOrderItems }

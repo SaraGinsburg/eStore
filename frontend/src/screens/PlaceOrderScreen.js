@@ -1,20 +1,21 @@
-import React, { useState } from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import {
-  Button,
-  Row,
-  Col,
-  ListGroup,
-  Image,
-  Card,
-  ListGroupItem,
-} from 'react-bootstrap'
+import { Button, Row, Col, ListGroup, Image, Card } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux' //need it to get state for cart
 import Message from '../components/Message'
 import CheckoutSteps from '../components/CheckoutSteps'
+import { createOrder } from '../actions/orderActions'
 
-const PlaceOrderScreen = () => {
+const PlaceOrderScreen = ({ history }) => {
+  const dispatch = useDispatch()
+
   const cart = useSelector((state) => state.cart)
+
+  if (!cart.shippingAddress.address) {
+    history.push('/shipping')
+  } else if (!cart.paymentMethod) {
+    history.push('/payment')
+  }
 
   // calculate price, tax, shipping and total
 
@@ -29,8 +30,29 @@ const PlaceOrderScreen = () => {
     cart.shippingPrice +
     Number(cart.taxPrice)
   ).toFixed(2)
+
+  const orderCreate = useSelector((state) => state.orderCreate)
+  const { order, success, error } = orderCreate
+
+  useEffect(() => {
+    if (success) {
+      history.push(`/order/${order._id}`)
+    }
+    // eslint-disable-next-line
+  }, [history, success])
+
   const placeOrderHandler = () => {
-    console.log('place order')
+    dispatch(
+      createOrder({
+        orderItems: cart.cartItems,
+        shippingAddress: cart.shippingAddress,
+        paymentMethod: cart.paymentMethod,
+        itemsPrice: cart.itemsPrice,
+        shippingPrice: cart.shippingPrice,
+        taxPrice: cart.taxPrice,
+        totalPrice: cart.totalPrice,
+      })
+    )
   }
   return (
     <>
@@ -117,7 +139,10 @@ const PlaceOrderScreen = () => {
                   <Col>${cart.totalPrice}</Col>
                 </Row>
               </ListGroup.Item>
-              <ListGroup>
+              <ListGroup.Item>
+                {error && <Message variant="danger">{error}</Message>}
+              </ListGroup.Item>
+              <ListGroup.Item>
                 <Button
                   type="button"
                   className="btn-block"
@@ -126,7 +151,7 @@ const PlaceOrderScreen = () => {
                 >
                   Place Order
                 </Button>
-              </ListGroup>
+              </ListGroup.Item>
             </ListGroup>
           </Card>
         </Col>
