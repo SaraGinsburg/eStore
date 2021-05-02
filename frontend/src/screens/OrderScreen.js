@@ -15,7 +15,7 @@ const OrderScreen = ({ match }) => {
 
   useEffect(() => {
     if (!order || order._id !== orderId) dispatch(getOrderDetails(orderId))
-  }, [order, orderId])
+  }, [dispatch, orderId])
   if (!loading) {
     //calculate prices
     order.itemsPrice = order.orderItems.reduce(
