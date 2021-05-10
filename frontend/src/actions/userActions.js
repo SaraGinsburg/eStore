@@ -8,6 +8,7 @@ import {
   USER_LIST_FAIL,
   USER_LIST_REQUEST,
   USER_LIST_SUCCESS,
+  USER_LIST_RESET,
   USER_LOGIN_FAIL,
   USER_LOGIN_REQUEST,
   USER_LOGIN_SUCCESS,
@@ -57,6 +58,8 @@ export const logout = () => (dispatch) => {
   dispatch({ type: USER_LOGOUT })
   dispatch({ type: USER_DETAILS_RESET })
   dispatch({ type: ORDER_LIST_MY_RESET })
+  dispatch({ type: USER_LIST_RESET })
+
   document.location.href = '/login'
 }
 export const register = (name, email, password) => async (dispatch) => {
