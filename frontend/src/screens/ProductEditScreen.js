@@ -1,10 +1,11 @@
+import axios from 'axios'
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Form, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import FormContainer from '../components/FormContainer'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
+import FormContainer from '../components/FormContainer'
 import { listProductDetails, updateProduct } from '../actions/productActions'
 import { PRODUCT_UPDATE_RESET } from '../constants/productConstants'
 
@@ -19,6 +20,7 @@ const ProductEditScreen = ({ match, history }) => {
   const [category, setCategory] = useState('')
   const [countInStock, setCountInStock] = useState(0)
   const [description, setDescription] = useState('')
+  const [uploading, setUploading] = useState(false)
 
   const dispatch = useDispatch()
 
@@ -51,6 +53,29 @@ const ProductEditScreen = ({ match, history }) => {
     }
   }, [dispatch, history, productId, product, successUpdate])
 
+  const uploadFileHandler = async (e) => {
+    const file = e.target.files[0] //e.target.files is an array, we are taking the first item in the array
+    const formData = new FormData()
+    formData.append('image', file)
+    setUploading(true)
+
+    //before making the request, create a config,
+    //similar to the one in actions, with headers
+    try {
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+      const { data } = await axios.post('/api/upload', formData, config)
+      setImage(data) //getting the path
+      setUploading(false)
+    } catch (error) {
+      console.error(error)
+      setUploading(false)
+    }
+  }
+
   const submitHandler = (e) => {
     e.preventDefault()
     //getting form fields from the component state
@@ -59,6 +84,7 @@ const ProductEditScreen = ({ match, history }) => {
         _id: productId,
         name,
         price,
+        image,
         brand,
         category,
         countInStock,
@@ -109,6 +135,13 @@ const ProductEditScreen = ({ match, history }) => {
                 value={image}
                 onChange={(e) => setImage(e.target.value)}
               ></Form.Control>
+              <Form.File
+                id="image-file"
+                label="Choose File"
+                custom
+                onChange={uploadFileHandler}
+              ></Form.File>
+              {uploading && <Loader />}
             </Form.Group>
 
             <Form.Group controlId="brand">
@@ -148,7 +181,7 @@ const ProductEditScreen = ({ match, history }) => {
                 label="Description"
                 placeholder="Enter Description"
                 value={description}
-                onChange={(e) => setDescription(e.target.checked)}
+                onChange={(e) => setDescription(e.target.value)}
               ></Form.Control>
             </Form.Group>
 
