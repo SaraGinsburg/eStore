@@ -8,6 +8,7 @@ import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { getOrderDetails, payOrder } from '../actions/orderActions'
 import { ORDER_PAY_RESET } from '../constants/orderConstants'
+import { CART_ITEMS_RESET } from '../constants/cartConstants'
 
 const OrderScreen = ({ match }) => {
   const orderId = match.params.id
@@ -31,6 +32,8 @@ const OrderScreen = ({ match }) => {
       script.async = true
       script.onload = () => {
         setSdkReady(true)
+        localStorage.removeItem('cartItems')
+        dispatch({ type: CART_ITEMS_RESET })
       }
       document.body.appendChild(script)
     }
