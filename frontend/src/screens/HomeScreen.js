@@ -6,15 +6,19 @@ import { listProducts } from '../actions/productActions'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 
-const HomeScreen = () => {
+const HomeScreen = ({ match }) => {
+  const keyword = match.params.keyword
+
   const dispatch = useDispatch()
+
   //useSelector enables us to get the pieces of state we need:
   //loading, error and products
   const productList = useSelector((state) => state.productList)
   const { loading, error, products } = productList
+
   useEffect(() => {
-    dispatch(listProducts()) //firing the action to get the list of products,
-  }, [dispatch]) // send it through the reducer to the state
+    dispatch(listProducts(keyword)) //firing the action to get the list of products,
+  }, [dispatch, keyword]) // send it through the reducer to the state
 
   return (
     <>
